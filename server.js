@@ -1,17 +1,21 @@
 const http = require('http');
+const express = require('express');
+const app = express();
+const bodyParser = require('body-parser');
 
-const server = http.createServer((req, res) => {
-    // Example data (hardcoded)
-    const data = {
-        latitude: 48.8566,
-        longitude: 2.3522
-    };
+app.use(bodyParser.json());  // Middleware to parse JSON request body
 
-    res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify(data));
+// Handle the geolocation data from the client
+app.post('/geolocation', (req, res) => {
+    const { latitude, longitude } = req.body;
+    
+    // Here you can process or store the geolocation data
+    console.log(`Received geolocation: Latitude: ${latitude}, Longitude: ${longitude}`);
+    
+    // Send a response back to the client
+    res.json({ message: 'Geolocation received successfully!' });
 });
 
-const PORT = process.env.PORT || 3000;
-server.listen(PORT, () => {
-    console.log(`Server is running at http://localhost:${PORT}`);
+app.listen(process.env.PORT || 3000, () => {
+    console.log('Server is running');
 });
